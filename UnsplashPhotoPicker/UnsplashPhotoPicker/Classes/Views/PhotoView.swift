@@ -56,7 +56,7 @@ class PhotoView: UIView {
 
     func configure(with photo: UnsplashPhoto, showsUsername: Bool = true) {
         self.showsUsername = showsUsername
-        userNameLabel.text = photo.user.displayName
+        userNameLabel.text = photo.user?.displayName
         imageView.backgroundColor = photo.color
         currentPhotoID = photo.identifier
         downloadImage(with: photo)

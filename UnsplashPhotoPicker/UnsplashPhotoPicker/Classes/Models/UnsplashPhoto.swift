@@ -31,7 +31,7 @@ public struct UnsplashPhoto: Codable {
     public let width: Int
     public let color: UIColor?
     public let exif: UnsplashPhotoExif?
-    public let user: UnsplashUser
+    public let user: UnsplashUser?
     public let urls: [URLKind: URL]
     public let links: [LinkKind: URL]
     public let likesCount: Int
@@ -43,9 +43,13 @@ public struct UnsplashPhoto: Codable {
             "id": self.identifier,
             "height": self.height,
             "width": self.width,
-            "likes": self.likesCount,
-            "user": self.user.json()
+            "likes": self.likesCount
         ]
+
+        if let user = self.user {
+            data["user"] = user.json()
+        }
+
 
         if let color = self.color {
             data["color"] = "#\(color.hexString)"
@@ -105,7 +109,7 @@ public struct UnsplashPhoto: Codable {
         }
 
         exif = try? container.decode(UnsplashPhotoExif.self, forKey: .exif)
-        user = try container.decode(UnsplashUser.self, forKey: .user)
+        user = try? container.decode(UnsplashUser.self, forKey: .user)
         urls = try container.decode([URLKind: URL].self, forKey: .urls)
         links = try container.decode([LinkKind: URL].self, forKey: .links)
         likesCount = try container.decode(Int.self, forKey: .likesCount)
@@ -129,4 +133,3 @@ public struct UnsplashPhoto: Codable {
     }
 
 }
-
