@@ -27,4 +27,15 @@ public struct UnsplashPhotoExif: Codable {
         case model
     }
 
+    public func json() -> [String: Any] {
+        let data: [String: Any] = [
+            "aperture": self.aperture,
+            "exposure_time": self.exposureTime,
+            "focal_length": self.focalLength,
+            "iso": self.iso,
+            "make": self.make,
+            "model": self.model
+        ]
+        return data
+    }
 }

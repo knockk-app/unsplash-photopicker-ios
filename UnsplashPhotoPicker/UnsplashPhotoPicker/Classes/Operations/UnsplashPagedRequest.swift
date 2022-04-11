@@ -39,6 +39,11 @@ class UnsplashPagedRequest: UnsplashRequest {
         var parameters = super.prepareParameters() ?? [String: Any]()
         parameters["page"] = cursor.page
         parameters["per_page"] = cursor.perPage
+        parameters["orientation"] = "landscape"
+
+        if let language = Locale.current.languageCode?.lowercased() {
+            parameters["lang"] = language
+        }
 
         if let cursorParameters = cursor.parameters {
             for (key, value) in cursorParameters {

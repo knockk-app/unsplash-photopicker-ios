@@ -54,6 +54,55 @@ public struct UnsplashUser: Codable {
         case totalPhotos = "total_photos"
     }
 
+    public func json() -> [String: Any] {
+        var data: [String: Any] = [
+            "id": self.identifier,
+            "username": self.username,
+            "profile_image": self.profileImage,
+            "links": self.links,
+            "total_likes": self.totalLikes,
+            "total_photos": self.totalPhotos
+        ]
+
+        if let firstName = self.firstName {
+            data["first_name"] = firstName
+        }
+
+        if let lastName = self.lastName {
+            data["last_name"] = lastName
+        }
+
+        if let name = self.name {
+            data["name"] = name
+        }
+
+        if let bio = self.bio {
+            data["bio"] = bio
+        }
+
+        if let location = self.location {
+            data["location"] = location
+        }
+
+        if let portfolioURL = self.portfolioURL {
+            data["portfolio_url"] = portfolioURL.absoluteString
+        }
+
+        var i: [String: String] = [:]
+        for (_, value) in self.profileImage.enumerated() {
+            i[value.key.rawValue] = value.value.absoluteString
+        }
+        data["profile_image"] = i
+
+        var l: [String: String] = [:]
+        for (_, value) in self.links.enumerated() {
+            l[value.key.rawValue] = value.value.absoluteString
+        }
+        data["links"] = l
+
+        return data
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         identifier = try container.decode(String.self, forKey: .identifier)

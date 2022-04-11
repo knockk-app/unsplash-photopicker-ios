@@ -44,10 +44,10 @@ public class UnsplashPhotoPicker: UINavigationController {
 
      - parameter configuration: The configuration struct that specifies how UnsplashPhotoPicker should be configured.
      */
-    public init(configuration: UnsplashPhotoPickerConfiguration) {
+    public init(configuration: UnsplashPhotoPickerConfiguration, customTitle: String?, customSubtitle: String?) {
         Configuration.shared = configuration
 
-        self.photoPickerViewController = UnsplashPhotoPickerViewController()
+        self.photoPickerViewController = UnsplashPhotoPickerViewController(customTitle: customTitle, customSubtitle: customSubtitle)
 
         super.init(nibName: nil, bundle: nil)
 

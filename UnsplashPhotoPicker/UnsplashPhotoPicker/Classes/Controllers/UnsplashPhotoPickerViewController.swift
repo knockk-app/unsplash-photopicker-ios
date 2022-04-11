@@ -59,6 +59,15 @@ class UnsplashPhotoPickerViewController: UIViewController {
         return collectionView
     }()
 
+    private lazy var subtitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     private let spinner: UIActivityIndicatorView = {
         if #available(iOS 13.0, *) {
             let spinner = UIActivityIndicatorView(style: .medium)
@@ -91,6 +100,8 @@ class UnsplashPhotoPickerViewController: UIViewController {
     }
 
     private let editorialDataSource = PhotosDataSourceFactory.collection(identifier: Configuration.shared.editorialCollectionId).dataSource
+    private let customTitle: String?
+    private let customSubtitle: String?
 
     private var previewingContext: UIViewControllerPreviewing?
     private var searchText: String?
@@ -99,8 +110,10 @@ class UnsplashPhotoPickerViewController: UIViewController {
 
     // MARK: - Lifetime
 
-    init() {
+    init(customTitle: String?, customSubtitle: String?) {
         self.dataSource = editorialDataSource
+        self.customTitle = customTitle
+        self.customSubtitle = customSubtitle
 
         super.init(nibName: nil, bundle: nil)
 
@@ -122,6 +135,8 @@ class UnsplashPhotoPickerViewController: UIViewController {
         setupSearchController()
         setupCollectionView()
         setupSpinner()
+
+        self.subtitleLabel.text = self.customSubtitle
 
         let trimmedQuery = Configuration.shared.query?.trimmingCharacters(in: .whitespacesAndNewlines)
         setSearchText(trimmedQuery)
@@ -178,10 +193,14 @@ class UnsplashPhotoPickerViewController: UIViewController {
     }
 
     private func setupCollectionView() {
+        view.addSubview(subtitleLabel)
         view.addSubview(collectionView)
 
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            subtitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            subtitleLabel.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -10),
+            subtitleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+            subtitleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor)
@@ -219,7 +238,7 @@ class UnsplashPhotoPickerViewController: UIViewController {
     }
 
     func updateTitle() {
-        title = String.localizedStringWithFormat("title".localized(), numberOfSelectedPhotos)
+        title = self.customTitle ?? String.localizedStringWithFormat("title".localized(), numberOfSelectedPhotos)
     }
 
     func updateDoneButtonState() {

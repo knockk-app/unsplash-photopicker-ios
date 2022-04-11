@@ -38,6 +38,46 @@ public struct UnsplashPhoto: Codable {
     public let downloadsCount: Int?
     public let viewsCount: Int?
 
+    public func json() -> [String: Any] {
+        var data: [String: Any] = [
+            "id": self.identifier,
+            "height": self.height,
+            "width": self.width,
+            "likes": self.likesCount,
+            "user": self.user.json()
+        ]
+
+        if let color = self.color {
+            data["color"] = "#\(color.hexString)"
+        }
+
+        if let exif = self.exif {
+            data["exif"] = exif.json()
+        }
+
+        if let downloadsCount = self.downloadsCount {
+            data["downloads"] = downloadsCount
+        }
+
+        if let views = self.viewsCount {
+            data["views"] = views
+        }
+
+        var u: [String: String] = [:]
+        for (_, value) in self.urls.enumerated() {
+            u[value.key.rawValue] = value.value.absoluteString
+        }
+        data["urls"] = u
+
+        var l: [String: String] = [:]
+        for (_, value) in self.links.enumerated() {
+            l[value.key.rawValue] = value.value.absoluteString
+        }
+        data["links"] = l
+
+        return data
+    }
+
     private enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case height
@@ -89,3 +129,4 @@ public struct UnsplashPhoto: Codable {
     }
 
 }
+
