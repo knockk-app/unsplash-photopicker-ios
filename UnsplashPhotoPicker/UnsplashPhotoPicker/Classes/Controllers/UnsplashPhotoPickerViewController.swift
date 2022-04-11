@@ -139,6 +139,7 @@ class UnsplashPhotoPickerViewController: UIViewController {
         self.subtitleLabel.text = self.customSubtitle
 
         let trimmedQuery = Configuration.shared.query?.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.searchController.searchBar.placeholder = trimmedQuery ?? "search.placeholder".localized()
         setSearchText(trimmedQuery)
     }
 
@@ -183,8 +184,8 @@ class UnsplashPhotoPickerViewController: UIViewController {
     }
 
     private func setupSearchController() {
-        let trimmedQuery = Configuration.shared.query?.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let query = trimmedQuery, query.isEmpty == false { return }
+//        let trimmedQuery = Configuration.shared.query?.trimmingCharacters(in: .whitespacesAndNewlines)
+//        if let query = trimmedQuery, query.isEmpty == false { return }
 
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -419,3 +420,4 @@ extension UnsplashPhotoPickerViewController: PagedDataSourceDelegate {
         }
     }
 }
+
