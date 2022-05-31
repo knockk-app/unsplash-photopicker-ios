@@ -112,7 +112,7 @@ public struct UnsplashPhoto: Codable {
         user = try? container.decode(UnsplashUser.self, forKey: .user)
         urls = try container.decode([URLKind: URL].self, forKey: .urls)
         links = try container.decode([LinkKind: URL].self, forKey: .links)
-        likesCount = try container.decode(Int.self, forKey: .likesCount)
+        likesCount = (try? container.decode(Int.self, forKey: .likesCount)) ?? 0
         downloadsCount = try? container.decode(Int.self, forKey: .downloadsCount)
         viewsCount = try? container.decode(Int.self, forKey: .viewsCount)
     }
